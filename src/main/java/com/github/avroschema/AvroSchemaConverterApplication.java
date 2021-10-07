@@ -7,9 +7,12 @@ public class AvroSchemaConverterApplication {
 
 	public static void main(String[] args) {
 		// TODO update args handling
-		if (args.length >= 2) {
-			AvroToJson converter = new AvroToJson();
-			converter.convertAvroToJson(args[0], args[1]);
-		}
+//		if (args.length >= 2) {
+//			AvroToJson converter = new AvroToJson();
+//			converter.convertAvroToJson(args[0], args[1]);
+//		}
+
+		JsonGenerator generator = new JsonGenerator();
+		generator.generateJsonSchema();
 	}
 }
