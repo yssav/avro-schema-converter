@@ -17,5 +17,8 @@ public class AvroSchemaConverterApplication {
 		JsonGenerator generator = new JsonGenerator();
 		generator.generateViaVictools();
 		generator.generateViaJackson();
+
+		// avro to json plugin
+		generator.generateViaConversionPlugin();
 	}
 }

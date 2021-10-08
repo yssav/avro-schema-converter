@@ -5,6 +5,7 @@ out/
 *.iml
 *.ipr
 /src/main/java/META-INF
+/output
 
 # Eclipse
 .settings/

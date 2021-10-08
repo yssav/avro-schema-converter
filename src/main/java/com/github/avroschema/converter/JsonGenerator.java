@@ -1,20 +1,23 @@
 package com.github.avroschema.converter;
 
+import com.equifax.dfds.fulfillment.core.plugin.conversion.AvroToJsonPlugin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import com.github.victools.jsonschema.generator.*;
 import example.avro.User;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class JsonGenerator {
 
@@ -59,6 +62,45 @@ public class JsonGenerator {
                 Path.of("output/" + filename),
                 mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node)
         );
+    }
+
+    public void generateViaConversionPlugin() {
+        try {
+            String avscContent = Files.readString(Paths.get("src/main/avro/User.avsc"));
+            Schema schema = new Schema.Parser().parse(avscContent);
+            GenericRecord record = new GenericData.Record(schema);
+
+            AvroToJsonPlugin plugin = new AvroToJsonPlugin();
+            initializePlugin(plugin);
+            System.out.println(plugin.process(record));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initializePlugin(AvroToJsonPlugin avroToJsonPlugin) {
+        Map<String, String> field;
+        List<Object> fields = new ArrayList<>();
+
+        field = new HashMap<>();
+        field.put("mapping", "user.name");
+        field.put("field", "name");
+        fields.add(field);
+        field = new HashMap<>();
+        field.put("mapping", "user.favoriteNumber");
+        field.put("field", "favorite_number");
+        fields.add(field);
+        field = new HashMap<>();
+        field.put("mapping", "user.favoriteColor");
+        field.put("field", "favorite_color");
+        fields.add(field);
+
+        Map<String, Object> configuration = new HashMap<>();
+        configuration.put("fields", fields);
+        configuration.put("recordClass", "example.avro.User");
+
+        avroToJsonPlugin.setConfig(configuration);
+        avroToJsonPlugin.init();
     }
 
     /**
