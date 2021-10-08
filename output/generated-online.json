@@ -1,0 +1,31 @@
+{
+  "definitions" : {
+    "record:example.avro.User" : {
+      "type" : "object",
+      "required" : [ "name", "favorite_number", "favorite_color" ],
+      "additionalProperties" : false,
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "favorite_number" : {
+          "oneOf" : [ {
+            "type" : "integer",
+            "minimum" : -2147483648,
+            "maximum" : 2147483647
+          }, {
+            "type" : "null"
+          } ]
+        },
+        "favorite_color" : {
+          "oneOf" : [ {
+            "type" : "string"
+          }, {
+            "type" : "null"
+          } ]
+        }
+      }
+    }
+  },
+  "$ref" : "#/definitions/record:example.avro.User"
+}
