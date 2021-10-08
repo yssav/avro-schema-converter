@@ -1,0 +1,509 @@
+{
+  "$schema" : "https://json-schema.org/draft/2019-09/schema",
+  "$defs" : {
+    "Class(Object)" : {
+      "type" : "object",
+      "properties" : {
+        "componentType" : {
+          "$ref" : "#/$defs/Class(Object)"
+        }
+      }
+    },
+    "ClassLoader" : {
+      "type" : "object",
+      "properties" : {
+        "assertionLock" : { },
+        "classAssertionStatus" : {
+          "$ref" : "#/$defs/Map(String,Boolean)"
+        },
+        "classLoaderValueMap" : {
+          "type" : "object"
+        },
+        "classes" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Class(Object)"
+          }
+        },
+        "defaultAssertionStatus" : {
+          "type" : "boolean"
+        },
+        "defaultDomain" : {
+          "type" : "object",
+          "properties" : {
+            "classloader" : {
+              "$ref" : "#/$defs/ClassLoader"
+            },
+            "codesource" : {
+              "type" : "object",
+              "properties" : {
+                "location" : {
+                  "type" : "object",
+                  "properties" : {
+                    "authority" : {
+                      "type" : "string"
+                    },
+                    "file" : {
+                      "type" : "string"
+                    },
+                    "hashCode" : {
+                      "type" : "integer"
+                    },
+                    "host" : {
+                      "type" : "string"
+                    },
+                    "port" : {
+                      "type" : "integer"
+                    },
+                    "protocol" : {
+                      "type" : "string"
+                    },
+                    "ref" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            },
+            "hasAllPerm" : {
+              "type" : "boolean"
+            },
+            "key" : {
+              "type" : "object"
+            },
+            "permissions" : {
+              "type" : "object",
+              "properties" : {
+                "readOnly" : {
+                  "type" : "boolean"
+                }
+              }
+            },
+            "principals" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object"
+              }
+            },
+            "staticPermissions" : {
+              "type" : "boolean"
+            }
+          }
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "nameAndId" : {
+          "type" : "string"
+        },
+        "nativeLibraries" : {
+          "type" : "object"
+        },
+        "package2certs" : {
+          "type" : "object"
+        },
+        "packageAssertionStatus" : {
+          "$ref" : "#/$defs/Map(String,Boolean)"
+        },
+        "packages" : {
+          "type" : "object"
+        },
+        "parallelLockMap" : {
+          "type" : "object"
+        },
+        "parent" : {
+          "$ref" : "#/$defs/ClassLoader"
+        },
+        "unnamedModule" : {
+          "$ref" : "#/$defs/Module"
+        }
+      }
+    },
+    "Configuration" : {
+      "type" : "object",
+      "properties" : {
+        "allConfigurations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Configuration"
+          }
+        },
+        "graph" : {
+          "type" : "object"
+        },
+        "modules" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "cf" : {
+                "$ref" : "#/$defs/Configuration"
+              },
+              "mref" : {
+                "type" : "object",
+                "properties" : {
+                  "descriptor" : {
+                    "$ref" : "#/$defs/ModuleDescriptor"
+                  },
+                  "location" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "nameToModule" : {
+          "type" : "object"
+        },
+        "parents" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Configuration"
+          }
+        },
+        "targetPlatform" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Map(String,Boolean)" : {
+      "type" : "object"
+    },
+    "Map(String,JsonNode)" : {
+      "type" : "object"
+    },
+    "Map(String,Set(Module))" : {
+      "type" : "object"
+    },
+    "Module" : {
+      "type" : "object",
+      "properties" : {
+        "descriptor" : {
+          "$ref" : "#/$defs/ModuleDescriptor"
+        },
+        "exportedPackages" : {
+          "$ref" : "#/$defs/Map(String,Set(Module))"
+        },
+        "layer" : {
+          "$ref" : "#/$defs/ModuleLayer"
+        },
+        "loader" : {
+          "$ref" : "#/$defs/ClassLoader"
+        },
+        "moduleInfoClass" : {
+          "$ref" : "#/$defs/Class(Object)"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "openPackages" : {
+          "$ref" : "#/$defs/Map(String,Set(Module))"
+        },
+        "reads" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Module"
+          }
+        }
+      }
+    },
+    "ModuleDescriptor" : {
+      "type" : "object",
+      "properties" : {
+        "automatic" : {
+          "type" : "boolean"
+        },
+        "exports" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "mods" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "enum" : [ "SYNTHETIC", "MANDATED" ]
+                }
+              },
+              "source" : {
+                "type" : "string"
+              },
+              "targets" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "mainClass" : {
+          "type" : "string"
+        },
+        "modifiers" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "OPEN", "AUTOMATIC", "SYNTHETIC", "MANDATED" ]
+          }
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "open" : {
+          "type" : "boolean"
+        },
+        "opens" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "mods" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "enum" : [ "SYNTHETIC", "MANDATED" ]
+                }
+              },
+              "source" : {
+                "type" : "string"
+              },
+              "targets" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "packages" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "provides" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "providers" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "service" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "rawVersionString" : {
+          "type" : "string"
+        },
+        "requires" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "compiledVersion" : {
+                "$ref" : "#/$defs/Version"
+              },
+              "mods" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "enum" : [ "TRANSITIVE", "STATIC", "SYNTHETIC", "MANDATED" ]
+                }
+              },
+              "name" : {
+                "type" : "string"
+              },
+              "rawCompiledVersion" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "uses" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "version" : {
+          "$ref" : "#/$defs/Version"
+        }
+      }
+    },
+    "ModuleLayer" : {
+      "type" : "object",
+      "properties" : {
+        "allLayers" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/ModuleLayer"
+          }
+        },
+        "cf" : {
+          "$ref" : "#/$defs/Configuration"
+        },
+        "modules" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Module"
+          }
+        },
+        "nameToModule" : {
+          "type" : "object"
+        },
+        "parents" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/ModuleLayer"
+          }
+        },
+        "servicesCatalog" : {
+          "type" : "object",
+          "properties" : {
+            "map" : {
+              "type" : "object"
+            }
+          }
+        }
+      }
+    },
+    "Schema" : {
+      "type" : "object",
+      "properties" : {
+        "hashCode" : {
+          "type" : "integer"
+        },
+        "logicalType" : {
+          "type" : "object",
+          "properties" : {
+            "name" : {
+              "type" : "string"
+            }
+          }
+        },
+        "props" : {
+          "$ref" : "#/$defs/Map(String,JsonNode)"
+        },
+        "reserved" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "type" : {
+          "type" : "string",
+          "enum" : [ "RECORD", "ENUM", "ARRAY", "MAP", "UNION", "FIXED", "STRING", "BYTES", "INT", "LONG", "FLOAT", "DOUBLE", "BOOLEAN", "NULL" ]
+        }
+      }
+    },
+    "Version" : {
+      "type" : "object",
+      "properties" : {
+        "build" : {
+          "type" : "array",
+          "items" : { }
+        },
+        "pre" : {
+          "type" : "array",
+          "items" : { }
+        },
+        "sequence" : {
+          "type" : "array",
+          "items" : { }
+        },
+        "version" : {
+          "type" : "string"
+        }
+      }
+    }
+  },
+  "type" : "object",
+  "properties" : {
+    "data" : {
+      "type" : "object",
+      "properties" : {
+        "classLoader" : {
+          "$ref" : "#/$defs/ClassLoader"
+        },
+        "conversions" : {
+          "type" : "object"
+        },
+        "conversionsByClass" : {
+          "type" : "object"
+        },
+        "defaultValueCache" : {
+          "type" : "object"
+        }
+      }
+    },
+    "favorite_color" : {
+      "type" : "string"
+    },
+    "favorite_number" : {
+      "type" : "integer"
+    },
+    "fieldSetFlags" : {
+      "type" : "array",
+      "items" : {
+        "type" : "boolean"
+      }
+    },
+    "fields" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "aliases" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "defaultValue" : {
+            "type" : "object"
+          },
+          "doc" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "order" : {
+            "type" : "string",
+            "enum" : [ "ASCENDING", "DESCENDING", "IGNORE" ]
+          },
+          "position" : {
+            "type" : "integer"
+          },
+          "props" : {
+            "$ref" : "#/$defs/Map(String,JsonNode)"
+          },
+          "reserved" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "schema" : {
+            "$ref" : "#/$defs/Schema"
+          }
+        }
+      }
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "schema" : {
+      "$ref" : "#/$defs/Schema"
+    }
+  }
+}

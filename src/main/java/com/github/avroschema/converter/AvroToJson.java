@@ -1,4 +1,4 @@
-package com.github.avroschema;
+package com.github.avroschema.converter;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -76,7 +76,7 @@ public class AvroToJson {
      * @throws IOException
      */
     public void writeToFile(JsonNode node, String filename) throws IOException {
-        Files.writeString(Path.of(filename), JacksonUtils.prettyPrint(node));
+        Files.writeString(Path.of("output/" + filename), JacksonUtils.prettyPrint(node));
         logger.info("Successfully saved to: " + filename);
     }
 }

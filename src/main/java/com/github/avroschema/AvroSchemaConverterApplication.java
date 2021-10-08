@@ -1,18 +1,21 @@
 package com.github.avroschema;
 
+import com.github.avroschema.converter.AvroToJson;
+import com.github.avroschema.converter.JsonGenerator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class AvroSchemaConverterApplication {
 
 	public static void main(String[] args) {
-		// TODO update args handling
-//		if (args.length >= 2) {
-//			AvroToJson converter = new AvroToJson();
-//			converter.convertAvroToJson(args[0], args[1]);
-//		}
 
+		// avro schema to json schema converter
+		AvroToJson converter = new AvroToJson();
+		converter.convertAvroToJson("src/main/avro/User.avsc", "generated-fge.json");
+
+		// json converter from avro-generated classes
 		JsonGenerator generator = new JsonGenerator();
-		generator.generateJsonSchema();
+		generator.generateViaVictools();
+		generator.generateViaJackson();
 	}
 }
