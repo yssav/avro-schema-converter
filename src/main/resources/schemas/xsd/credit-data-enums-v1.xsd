@@ -1,0 +1,143 @@
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:bi="http://www.vedaxml.com/services/bureau/individual/v1"
+	targetNamespace="http://www.vedaxml.com/services/bureau/individual/v1" 
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xs:simpleType name="IdentityOptionEnum">
+		<xs:annotation>
+			<xs:documentation>What options do you want to apply to the identity segments of the bureau response</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="FILTER">
+				<xs:annotation>
+					<xs:documentation>Filter the Identity segments</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="AccountOptionEnum">
+		<xs:annotation>
+			<xs:documentation>What options do you want to apply to the Account segments of the bureau response</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="FILTER">
+				<xs:annotation>
+					<xs:documentation>Filter the Account segments</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="REFINE">
+				<xs:annotation>
+					<xs:documentation>Refine the Account segments</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="ReportOptionEnum">
+		<xs:annotation>
+			<xs:documentation>What additional report do you want to order from bureau depending on the segments obtained from bureau response.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="ITH">
+				<xs:annotation>
+					<xs:documentation>Individual Trading History Report</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="BureauNameTypeCodeEnum">
+		<xs:annotation>
+			<xs:documentation>What options do you want to apply to the Account segments of the bureau response</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>Primary Name</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="X">
+				<xs:annotation>
+					<xs:documentation>Previous Name (Not valid for CR Product)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="K">
+				<xs:annotation>
+					<xs:documentation>Known-as Name (Not valid for CR Product)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="OutputModeEnum">
+		<xs:annotation>
+			<xs:documentation>Used to record Subscriber access</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation>Advice</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F">
+				<xs:annotation>
+					<xs:documentation>Follow Up</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>Print</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="R">
+				<xs:annotation>
+					<xs:documentation>Remote</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="T">
+				<xs:annotation>
+					<xs:documentation>Tape</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="V">
+				<xs:annotation>
+					<xs:documentation>Verbal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>Direct Link</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M">
+				<xs:annotation>
+					<xs:documentation>Mail - Mailbox</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation>Mail - Mass Transfer</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Y">
+				<xs:annotation>
+					<xs:documentation>My Alert Request</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="SegmentTypeEnum">
+		<xs:annotation>
+			<xs:documentation>Industry segment to which this enquiry relates</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="telco"/>
+			<xs:enumeration value="alternative_lending"/>
+			<xs:enumeration value="utility"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+</xs:schema>

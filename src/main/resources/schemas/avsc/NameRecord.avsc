@@ -1,0 +1,12 @@
+{
+    "namespace": "com.equifax.au",
+    "type": "record",
+    "name": "NameRecord",
+    "fields": [
+        {"name":"firstName", "type":["null","string"], "default" : null},
+        {"name":"middleName", "type":["null","string"], "default" : null},
+        {"name":"lastName", "type":["null","string"], "default" : null},
+        {"name":"title", "type":["null","string"], "default" : null},
+        {"name":"suffix", "type":["null","string"], "default" : null}
+    ]
+}

@@ -1,0 +1,14 @@
+{
+  "namespace": "com.equifax.au",
+  "type": "record",
+  "name": "AccountPermission",
+  "fields": [
+    {
+      "name": "permissions",
+      "type": {
+        "type": "map",
+        "values": "string"
+      }
+    }
+  ]
+}

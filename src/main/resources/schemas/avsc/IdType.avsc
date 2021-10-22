@@ -1,0 +1,6 @@
+{
+  "namespace": "com.equifax.au",
+  "type": "enum",
+  "name": "IdType",
+  "symbols" : ["ID_TYPE_UNSPECIFIED", "ID_TYPE_SSN", "ID_TYPE_SIN", "ID_TYPE_TIN", "ID_TYPE_EMPLOYEE"]
+}

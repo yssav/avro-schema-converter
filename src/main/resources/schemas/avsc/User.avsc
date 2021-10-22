@@ -1,0 +1,112 @@
+{
+  "type": "record",
+  "name": "User",
+  "namespace": "com.equifax.au",
+  "doc": "Sample avro schema for user account",
+  "fields": [
+    {
+      "name": "id",
+      "doc": "System-assigned numeric user ID. Cannot be changed by the user.",
+      "type": "int"
+    },
+    {
+      "name": "username",
+      "doc": "The username chosen by the user. Can be changed by the user.",
+      "type": "string"
+    },
+    {
+      "name": "passwordHash",
+      "doc": "The user's password, hashed using [scrypt](http://www.tarsnap.com/scrypt.html).",
+      "type": "string"
+    },
+    {
+      "name": "signupDate",
+      "doc": "Timestamp (milliseconds since epoch) when the user signed up",
+      "type": "long"
+    },
+    {
+      "name": "contactNumbers",
+      "doc": "List of contact numbers",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": []
+    },
+    {
+      "name": "name",
+      "doc": "Details for user's full name",
+      "type": "com.equifax.au.NameRecord"
+    },
+    {
+      "name": "accountStatus",
+      "doc": "Current status of user account",
+      "type": ["null", "com.equifax.au.AccountStatus"],
+      "default": null
+    },
+    {
+      "name": "dateOfBirth",
+      "type": {
+        "type": "int",
+        "logicalType": "date"
+      }
+    },
+    {
+      "name": "address",
+      "type": ["null", "com.equifax.au.Address"],
+      "default": null
+    },
+    {
+      "name": "photoId",
+      "doc": "Uploaded id from user",
+      "type": ["com.equifax.au.EmployeeId", "com.equifax.au.NationalId"]
+    },
+    {
+      "name": "emailAddresses",
+      "doc": "All email addresses on the user's account",
+      "type": {
+        "type": "array",
+        "items": "com.equifax.au.EmailAddress"
+      },
+      "default": []
+    },
+    {
+      "name": "details",
+      "type": {
+        "type": "map",
+        "values": "string"
+      }
+    },
+    {
+      "name": "idNumbers",
+      "type": {
+        "type": "map",
+        "values": "int"
+      }
+    },
+    {
+      "name": "roles",
+      "doc": "All roles assigned to user account",
+      "type": {
+        "type": "array",
+        "items": {
+            "type": "record",
+            "name": "AccountRole",
+            "doc": "Stores details about an email address that a user has associated with their account.",
+            "fields": [
+                {"name": "name", "type": "string"},
+                {
+                  "name": "permissions",
+                  "type": {
+                    "type": "array",
+                    "items": "com.equifax.au.AccountPermission"
+                  },
+                  "default": []
+                }
+            ]
+        }
+      },
+      "default": []
+    }
+  ]
+}

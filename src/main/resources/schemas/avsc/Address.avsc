@@ -1,0 +1,13 @@
+{
+    "namespace": "com.equifax.au",
+    "type": "record",
+    "name": "Address",
+    "fields": [
+        {"name":"houseNumber", "type":["null","string"], "default" : null},
+        {"name":"streetName", "type":["null","string"], "default" : null},
+        {"name":"state", "type":["null","string"], "default" : null},
+        {"name":"city", "type":["null","string"], "default" : null},
+        {"name":"country", "type":["null","string"], "default" : null},
+        {"name":"postalCode", "type":["null","int"], "default" : null}
+    ]
+}

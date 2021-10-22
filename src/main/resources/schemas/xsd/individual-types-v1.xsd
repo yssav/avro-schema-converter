@@ -1,0 +1,807 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:bi="http://www.vedaxml.com/services/bureau/individual/v1" xmlns:cb="http://www.vedaxml.com/services/common/bureau/v1" xmlns:cuser="http://www.vedaxml.com/services/common/users/v1" xmlns:cid="http://www.vedaxml.com/services/common/identity/v1" xmlns:cgs="http://www.vedaxml.com/services/common/geospatial/v1" xmlns:cmnfin="http://www.vedaxml.com/services/common/financial/v1" xmlns:corg="http://www.vedaxml.com/services/common/organisation/v1" targetNamespace="http://www.vedaxml.com/services/bureau/individual/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="individual-account-types-v1.xsd"/>
+	<xs:include schemaLocation="credit-data-enums-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/bureau/v1" schemaLocation="../../../../common/bureau/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/users/v1" schemaLocation="../../../../common/users/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/identity/v1" schemaLocation="../../../../common/users/schemas/identity-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/geospatial/v1" schemaLocation="../../../../common/geospatial/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/financial/v1" schemaLocation="../../../../common/financial/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/organisation/v1" schemaLocation="../../../../common/organisation/schemas/types-v1.xsd"/>
+	<xs:complexType name="IndividualType">
+		<xs:sequence>
+			<xs:element name="name" type="bi:NameType"/>
+			<xs:element name="gender" type="bi:GenderType"/>
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0"/>
+			<xs:element name="driversLicence" type="bi:DriversLicenceType" minOccurs="0"/>
+			<xs:sequence minOccurs="0" maxOccurs="2">
+				<xs:element name="structuredAddress" type="bi:StructuredAddressType" minOccurs="0" maxOccurs="2"/>
+				<xs:element name="unstructuredAddress" type="bi:UnstructuredAddressType" minOccurs="0" maxOccurs="2"/>
+			</xs:sequence>
+			<xs:element name="employment" type="bi:EmployerType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="NameType">
+		<xs:sequence>
+			<xs:element name="type" type="bi:BureauNameTypeCodeEnum"/>
+			<xs:element name="title" type="xs:token" minOccurs="0"/>
+			<xs:element name="givenName" type="xs:token"/>
+			<xs:element name="otherNames" type="xs:token" minOccurs="0"/>
+			<xs:element name="surname" type="xs:token"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MatchedNameType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReportedAndEnquiryMetadataType" minOccurs="0"/>
+			<xs:element name="title" type="xs:token" minOccurs="0"/>
+			<xs:element name="givenName" type="xs:token"/>
+			<xs:element name="otherNames" type="xs:token" minOccurs="0"/>
+			<xs:element name="surname" type="xs:token"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GenderType">
+		<xs:sequence>
+			<xs:element name="id" type="cid:GenderCodeEnum"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DriversLicenceType">
+		<xs:sequence>
+			<xs:element name="licenceNumber" type="xs:token"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MatchedDriversLicenceType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReportedMetadataType" minOccurs="0"/>
+			<xs:element name="licenceNumber" type="xs:token"/>
+			<xs:element name="state" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MatchedDateOfBirthType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReportedMetadataType" minOccurs="0"/>
+			<xs:element name="dateOfBirth" type="xs:date"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StructuredAddressType">
+		<xs:sequence>
+			<xs:element name="type" type="bi:CurrentPreviousEnum"/>
+			<xs:element name="property" type="xs:token" minOccurs="0"/>
+			<xs:element name="unitNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="streetNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="streetName" type="xs:token" minOccurs="0"/>
+			<xs:element name="streetType" type="xs:token" minOccurs="0"/>
+			<xs:element name="suburb" type="xs:token" minOccurs="0"/>
+			<xs:element name="state" type="xs:token" minOccurs="0"/>
+			<xs:element name="postcode" type="xs:token" minOccurs="0"/>
+			<xs:element name="dpid" type="cgs:DataPointIdType" minOccurs="0"/>
+			<xs:element name="countryCode" type="xs:token" default="AUS" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MatchedStructuredAddressType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReportedAndReferencesMetadataType"/>
+			<xs:element name="type" type="bi:CurrentPreviousEnum"/>
+			<xs:element name="property" type="xs:token" minOccurs="0"/>
+			<xs:element name="unitNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="streetNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="streetName" type="xs:token" minOccurs="0"/>
+			<xs:element name="streetType" type="xs:token" minOccurs="0"/>
+			<xs:element name="suburb" type="xs:token" minOccurs="0"/>
+			<xs:element name="state" type="cgs:AusAndOthAndNZAndOSStateEnum" minOccurs="0"/>
+			<xs:element name="postcode" type="cgs:PostcodeType" minOccurs="0"/>
+			<xs:element name="dpid" type="cgs:DataPointIdType" minOccurs="0"/>
+			<xs:element name="countryCode" type="cgs:CountryCodeAndUnknownEnum" default="AUS" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnstructuredAddressType">
+		<xs:sequence>
+			<xs:element name="type" type="bi:CurrentPreviousEnum"/>
+			<xs:element name="dpid" type="cgs:DataPointIdType" minOccurs="0"/>
+			<xs:element name="address" type="xs:token"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EmployerType">
+		<xs:sequence>
+			<xs:element name="companyIdentity" type="bi:CompanyIdentityType"/>
+			<xs:element name="occupation" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MatchedEmployerType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReportedAndReferencesMetadataType"/>
+			<xs:element name="type" type="bi:CurrentPreviousEnum"/>
+			<xs:element name="companyIdentity" type="bi:CompanyIdentityType" minOccurs="0"/>
+			<xs:element name="occupation" type="xs:string" minOccurs="0"/>
+			<xs:element name="isSelfEmployed" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CompanyIdentityType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0"/>
+			<xs:element name="countryCode" type="cgs:CountryCodeAndUnknownEnum" default="AUS" minOccurs="0"/>
+			<xs:element name="ABN" type="corg:ABNType" minOccurs="0"/>
+			<xs:element name="organisationNumber" type="bi:OrganisationNumberType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CurrentPreviousEnum">
+		<xs:annotation>
+			<xs:documentation>Defines a type as being current or previous</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="C">
+				<xs:annotation>
+					<xs:documentation>Current</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>Previous</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="MetadataType">
+		<xs:sequence>
+			<!--TODO: R20 make this required (possible issue with isDeceased field - need to verify)-->
+			<xs:element name="sequence" minOccurs="0" type="xs:token"/>
+			<xs:element name="lifecycle" minOccurs="0">
+				<xs:complexType>
+					<xs:attributeGroup ref="bi:ModifiedAttrGroup"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReferenceAndLifecycleMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:MetadataType">
+				<xs:sequence>
+					<xs:element name="bureauReference" type="cb:BureauReferenceType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ReferenceMetadataType">
+		<xs:sequence>
+			<xs:element name="bureauReference" type="cb:BureauReferenceType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--TODO: may have to revisit where this is used based on the outcome of updating the segments from pegasus-->
+	<xs:complexType name="ReferencesMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:MetadataType">
+				<xs:sequence>
+					<xs:element name="bureauReferences" type="bi:BureauReferenceCollectionType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SegmentTypeMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:ReferencesMetadataType">
+				<xs:sequence>
+					<xs:element name="segmentType" type="bi:SegmentTypeEnum" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<!-- TODO: R20 to check if there are any more similar instances 
+		 We can use below complex type "ReferencesMetadataType" for the purpose, 
+		 but when we make complex type "MetadataType" required, Filenotes section will fail.
+		 Currently this complex type is being used for FileNotes alone. -->
+	<xs:complexType name="BureauReferencesMetadataType">
+		<xs:sequence>
+			<xs:element name="sequence" minOccurs="0" type="xs:token"/>
+			<xs:element name="bureauReferences" type="bi:BureauReferenceCollectionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BureauReferenceCollectionType">
+		<xs:sequence>
+			<xs:element name="bureauReference" type="cb:BureauReferenceType" maxOccurs="51"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AsicMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:MetadataType">
+				<xs:sequence>
+					<xs:element name="asic" minOccurs="0">
+						<xs:complexType>
+							<xs:attributeGroup ref="bi:AsicDateAttrGroup"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="bureauReferences" type="bi:BureauReferenceCollectionType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ReportedMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:MetadataType">
+				<xs:sequence>
+					<!--TODO: confirm if this should be optional -->
+					<xs:element name="reported" minOccurs="0">
+						<xs:complexType>
+							<xs:attributeGroup ref="bi:ReportedDateAttrGroup"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ReportedAndEnquiryMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:ReportedMetadataType">
+				<xs:sequence>
+					<xs:element name="enquiry" minOccurs="0">
+						<xs:complexType>
+							<xs:attributeGroup ref="bi:EnquiryDateAttrGroup"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ReportedAndReferenceMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:ReportedMetadataType">
+				<xs:sequence>
+					<xs:element name="bureauReference" type="cb:BureauReferenceType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ReportedAndReferencesMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:ReportedMetadataType">
+				<xs:sequence>
+					<xs:element name="bureauReferences" type="bi:BureauReferenceCollectionType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="LifecycleAndReportedAndReferenceMetadataType">
+		<xs:complexContent>
+			<xs:extension base="bi:MetadataType">
+				<xs:sequence>
+					<xs:element name="reported" minOccurs="0">
+						<xs:complexType>
+							<xs:attributeGroup ref="bi:ReportedDateAttrGroup"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="bureauReference" type="cb:BureauReferenceType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:attributeGroup name="ReportedDateAttrGroup">
+		<xs:annotation>
+			<xs:documentation>Group of attributes related to reported dates on the Bureau</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="firstDate" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>First reported date in the Bureau.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lastDate" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Last reported date in the Bureau.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="ModifiedAttrGroup">
+		<xs:annotation>
+			<xs:documentation>Group of attributes related to modification dates on the Bureau</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="createdDate" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Date created in the Bureau.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="createdTime" type="xs:time" use="optional"/>
+		<xs:attribute name="updatedDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Last updated date in the Bureau.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="updatedTime" type="xs:time" use="optional"/>
+		<xs:attribute name="correctionDate" type="xs:date" use="optional"/>
+		<xs:attribute name="createMemberCode" type="cuser:member-codeType" use="optional"/>
+		<xs:attribute name="createBranchCode" type="cuser:branch-codeType" use="optional"/>
+		<xs:attribute name="ownerMemberCode" type="cuser:member-codeType" use="optional"/>
+		<xs:attribute name="ownerBranchCode" type="cuser:branch-codeType" use="optional"/>
+		<xs:attribute name="createLegacyIndustryType" type="xs:token" use="optional"/>
+		<xs:attribute name="createIndustryType" type="xs:token" use="optional"/>
+		<xs:attribute name="ownerLegacyIndustryType" type="xs:token" use="optional"/>
+		<xs:attribute name="ownerIndustryType" type="xs:token" use="optional"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="EnquiryDateAttrGroup">
+		<xs:annotation>
+			<xs:documentation>Group of attributes related to enquiry dates on the Bureau</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="lastCreditEnquiryDate" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Date last enquired in the Bureau.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="AsicDateAttrGroup">
+		<xs:annotation>
+			<xs:documentation>Group of attributes related to ASIC compliance</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="lastExtractDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Date details were last sourced from a company extract</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lastExtractTime" type="xs:time" use="optional">
+			<xs:annotation>
+				<xs:documentation>Time details were last sourced from a company extract</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lastUpdateDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Date details were last updated. As opposed to an extract, an update might only refresh a subset of the data</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lastUpdateTime" type="xs:time" use="optional">
+			<xs:annotation>
+				<xs:documentation>Time details were last updated</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:complexType name="CourtActionType">
+		<xs:sequence>
+			<!--TODO: needs to be Reference and Reference S -->
+			<xs:element name="metadata" type="bi:ReferencesMetadataType"/>
+			<xs:element name="actionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The date when a court judgement was signed or a writ, summons or claim was issued</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="creditor" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name of the creditor</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="amount" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dollar amount of Court Action</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:nonNegativeInteger">
+							<xs:attribute name="currencyCode" type="cmnfin:CurrencyCodeType"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="plaintNumber" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identification of the action as supplied by the court</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--TODO: EDM defines this as a ReferenceCodeType. should the value be the code or the description?-->
+			<xs:element name="courtType" type="bi:ReferenceCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Type of court in which the action took place</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="relationship" type="bi:ReferenceCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates whether the subject was a single borrower or part of an association</xs:documentation>
+				</xs:annotation>
+				<!--<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:token">
+							<xs:attribute name="code" type="xs:token">
+								<xs:annotation>
+									<xs:documentation>Type of relationship (code)</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>-->
+			</xs:element>
+			<xs:element name="coBorrower" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name of the co-borrower if the subject was part of an association</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="bi:BureauStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Current status of the court action</xs:documentation>
+				</xs:annotation>
+				<!--<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:token">
+							<xs:attribute name="date" type="xs:date">
+								<xs:annotation>
+									<xs:documentation>Status date</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute name="code" type="xs:token">
+								<xs:annotation>
+									<xs:documentation>Status code</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>-->
+			</xs:element>
+			<!--<xs:element name="statusDate" type="xs:date"/>-->
+		</xs:sequence>
+		<xs:attribute name="type" type="xs:token" use="optional">
+			<xs:annotation>
+				<xs:documentation>The type of court action: default-judgement, court-writ, court-summons, claim</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<!--TODO: can this be an enum? -->
+		<!--TODO: EDM defines this as a ReferenceCodeType. what is correct?-->
+	</xs:complexType>
+	<xs:complexType name="BureauStatusType">
+		<xs:sequence>
+			<xs:element name="description" type="xs:token"/>
+			<xs:element name="date" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="code" type="xs:token"/>
+	</xs:complexType>
+	<xs:complexType name="ReferenceCodeType">
+		<xs:sequence>
+			<xs:element name="description" type="xs:token"/>
+		</xs:sequence>
+		<xs:attribute name="code" type="xs:token"/>
+	</xs:complexType>
+	<xs:complexType name="DisqualifiedDirectorshipType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:AsicMetadataType"/>
+			<!--<xs:element name="dateDisqualified" type="xs:date" minOccurs="0">
+			</xs:element>
+			<xs:element name="dateDisqualifiedUntil" type="xs:date" minOccurs="0">
+			</xs:element>-->
+			<xs:element name="effectivePeriod" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="start" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Date of disqualification</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="end" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Date disqualification will be lifted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="generalMessages" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="generalMessage" type="bi:GeneralMessageSeqType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DirectorshipType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:AsicMetadataType"/>
+			<xs:element name="dateAppointed" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when the subject was appointed director of the organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateCeased" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when the subject ceased to be a director of the organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateLastKnownAsDirector" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when the subject was last recorded as a director</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="organisation" type="bi:OrganisationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Includes the organisation details</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="generalMessages" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="generalMessage" type="bi:GeneralMessageSeqType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="bi:CurrentPreviousEnum" use="optional">
+			<xs:annotation>
+				<xs:documentation>Determines whether the directorship is current or previous</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="OrganisationType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReferenceMetadataType" minOccurs="0"/>
+			<xs:element name="name" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name of the organisation</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="value" type="xs:token"/>
+						<xs:element name="effectivePeriod" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="start" type="xs:date"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!--<xs:element name="nameStartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date the name was registered or reserved with ASIC</xs:documentation>
+				</xs:annotation>
+			</xs:element>-->
+			<xs:element name="type" type="bi:ReferenceCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Type of organisation</xs:documentation>
+				</xs:annotation>
+				<!--<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:token">
+							<xs:attribute name="code">
+								<xs:annotation>
+									<xs:documentation>Associated code</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>-->
+			</xs:element>
+			<xs:element name="status" type="bi:ReferenceCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Status of the organisation</xs:documentation>
+				</xs:annotation>
+				<!--<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:token">
+							<xs:attribute name="code" type="xs:token">
+								<xs:annotation>
+									<xs:documentation>Associated code</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>-->
+			</xs:element>
+			<xs:element name="organisationNumber" type="bi:OrganisationNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The organisation number. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ABN" type="corg:ABNType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The organisation's Australian Business Number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BusinessNameType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:AsicMetadataType" minOccurs="0"/>
+			<xs:element name="startDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when the individual became the owner of the business name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--TODO: pull out into complex type.
+			TODO: align to EDM organisation
+			-->
+			<xs:element name="business">
+				<xs:annotation>
+					<xs:documentation>Includes the business details</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="metadata" type="bi:ReferenceMetadataType" minOccurs="0"/>
+						<xs:element name="name" type="xs:token" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Business name</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="previousStateOrTerritoryRegistration" type="bi:BusinessRegistrationType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>State registration details. Only available for business names registered prior to National Business Names reform in May 2012.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ABN" type="corg:ABNType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="generalMessages" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="generalMessage" type="bi:GeneralMessageSeqType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonalInsolvencyType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReferencesMetadataType" minOccurs="0"/>
+			<xs:element name="type" type="bi:ReferenceCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Full description of the type of insolvency (previously named bankruptcy-type)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateDeclared" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date the bankruptcy was declared</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="text" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The type of administration or petition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="administrationId" type="bi:AdministrationIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Administration identifier (previously called proceedings)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="bi:BureauStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates whether the personal insolvency, debt agreement or bankruptcy was discharged, terminated, completed or an objection to the discharge of the bankruptcy was lodged.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="relationship" type="bi:ReferenceCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates if other persons are part of the same application/joint estate (previously called role).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--TODO: pull out to common type. leverage from other coBorrower fields -->
+			<xs:element name="coBorrower" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name of other person who is part of the same application/joint estate</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="2"/>
+						<xs:maxLength value="20"/>
+						<xs:pattern value="([a-zA-Z0-9 \-:\.@#$%&#x26;\*\(\)_\+=!\\\{\}&#x22;'\?/,;])*">
+							<xs:annotation>
+								<xs:documentation>Valid characters are Alpha, Blanks and many punctuation characters.</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="OrganisationNumberType">
+		<xs:annotation>
+			<xs:documentation>Unique identifier for an organisation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BusinessRegistrationType">
+		<xs:sequence>
+			<xs:element name="state" type="cgs:australian-stateEnum" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The code of the state or territory where the business name was registered</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="number" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The number assigned by the state for registration of the business</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdministrationIdType">
+		<xs:sequence>
+			<xs:element name="district" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The district the matter was commenced in (previously called state).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="year" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The year in which the application/estate commenced.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="number" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The number from the source system</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="proceedingsStatus" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Either Part 9 or Part 10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserType">
+		<xs:sequence>
+			<xs:element name="memberCode" type="cuser:member-codeType"/>
+			<xs:element name="branchCode" type="cuser:branch-codeType"/>
+			<xs:element name="userCode" type="cuser:user-codeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AddressLineType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="CareOfType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AddressSuburbType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="240"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountryNameType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="AddressType">
+		<xs:sequence>
+			<xs:element name="type" type="bi:CurrentPreviousEnum"/>
+			<xs:element name="careOf" type="bi:CareOfType" minOccurs="0"/>
+			<xs:element name="line1" type="bi:AddressLineType" minOccurs="0"/>
+			<xs:element name="line2" type="bi:AddressLineType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Address room, floor, building, PO Box</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="line3" type="bi:AddressLineType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Street</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="suburb" type="bi:AddressSuburbType">
+				<xs:annotation>
+					<xs:documentation>Locality</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="state" type="cgs:australian-stateEnum" minOccurs="0"/>
+			<xs:element name="postcode" type="cgs:PostcodeType" minOccurs="0"/>
+			<xs:element name="country" type="bi:CountryNameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IndividualIdentityDetailsType">
+		<xs:sequence>
+			<xs:element name="name" type="bi:NameType"/>
+			<xs:element name="gender" type="bi:GenderType"/>
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0"/>
+			<xs:element name="driversLicence" type="bi:DriversLicenceType" minOccurs="0"/>
+			<xs:element name="address" type="bi:AddressType" maxOccurs="2"/>
+			<xs:element name="employment" type="bi:EmployerType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GeneralMessageSeqType">
+		<xs:sequence>
+			<xs:element name="sequence" type="xs:token" minOccurs="0"/>
+			<xs:element name="text" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="77"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			</xs:sequence>
+	</xs:complexType>
+	
+	
+	
+</xs:schema>

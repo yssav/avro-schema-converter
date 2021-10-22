@@ -1,22 +1,16 @@
 package com.github.avroschema.converter;
 
-import com.equifax.dfds.fulfillment.core.plugin.conversion.AvroToJsonPlugin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import com.github.victools.jsonschema.generator.*;
-import example.avro.User;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class JsonGenerator {
@@ -33,38 +27,38 @@ public class JsonGenerator {
             SchemaGeneratorConfig config = configBuilder.build();
             SchemaGenerator generator = new SchemaGenerator(config);
 
-            List<Class> classes = getClasses("example.avro");
-            for (Class cls : classes) {
-                writeToFile(cls.getName() + ".json", generator.generateSchema(cls));
-            }
-        } catch (IOException | ClassNotFoundException e) {
+            List<Class> classes = getClasses("com.equifax.au");
+            classes.forEach(cls -> {
+                if (!cls.getName().contains("$Builder")) {
+                    writeToFile(cls.getName() + ".json", generator.generateSchema(cls));
+                }
+            });
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }
 
     public void generateViaJackson() {
-        try {
-            SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
-            mapper.acceptJsonFormatVisitor(User.class, visitor);
-            JsonSchema schema = visitor.finalSchema();
-            writeToFile("generated-jackson.json", schema);
+        SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
+        //mapper.acceptJsonFormatVisitor(User.class, visitor);
+        JsonSchema schema = visitor.finalSchema();
+        writeToFile("generated-jackson.json", schema);
 
-            JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
-            JsonSchema schema2 = schemaGen.generateSchema(User.class);
-            writeToFile("generated-jackson-2.json", schema2);
+        JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
+        //JsonSchema schema2 = schemaGen.generateSchema(User.class);
+        //writeToFile("generated-jackson-2.json", schema2);
+    }
+
+    public void writeToFile(String filename, Object node) {
+        try {
+            Files.writeString(Path.of("output/" + filename),
+                    mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void writeToFile(String filename, Object node) throws IOException {
-        Files.writeString(
-                Path.of("output/" + filename),
-                mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node)
-        );
-    }
-
-    public void generateViaConversionPlugin() {
+    /*public void generateViaConversionPlugin() {
         try {
             String avscContent = Files.readString(Paths.get("src/main/avro/User.avsc"));
             Schema schema = new Schema.Parser().parse(avscContent);
@@ -101,7 +95,7 @@ public class JsonGenerator {
 
         avroToJsonPlugin.setConfig(configuration);
         avroToJsonPlugin.init();
-    }
+    }*/
 
     /**
      * Scans all classes accessible from the context class loader which belong to the given package and subpackages.

@@ -28,7 +28,7 @@ public class AvroToJson {
      * @param avscFile input file with avro schema
      * @param jsonFile output file to contain the converted avro schema
      */
-    public void convertAvroToJson(String avscFile, String jsonFile) {
+    public static void convertAvroToJson(String avscFile, String jsonFile) {
         try {
             String avscContent = Files.readString(Paths.get(avscFile));
             JsonNode node = JsonLoader.fromString(avscContent);
@@ -61,7 +61,7 @@ public class AvroToJson {
      * @param rootNode jsonNode to be updated
      * @return updated JsonNode
      */
-    public JsonNode updateJsonSchema(JsonNode rootNode) {
+    public static JsonNode updateJsonSchema(JsonNode rootNode) {
         ObjectNode jsonNode = (ObjectNode) rootNode;
 
         // TODO update values
@@ -75,7 +75,7 @@ public class AvroToJson {
      * @param filename filename for output
      * @throws IOException
      */
-    public void writeToFile(JsonNode node, String filename) throws IOException {
+    public static void writeToFile(JsonNode node, String filename) throws IOException {
         Files.writeString(Path.of("output/" + filename), JacksonUtils.prettyPrint(node));
         logger.info("Successfully saved to: " + filename);
     }

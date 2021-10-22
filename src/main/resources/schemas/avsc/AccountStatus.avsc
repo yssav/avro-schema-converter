@@ -1,0 +1,6 @@
+{
+    "namespace": "com.equifax.au",
+    "type": "enum",
+    "name": "AccountStatus",
+    "symbols" : ["ACTIVE", "INACTIVE", "SUSPENDED"]
+}

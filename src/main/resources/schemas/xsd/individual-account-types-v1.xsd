@@ -1,0 +1,291 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:bi="http://www.vedaxml.com/services/bureau/individual/v1" xmlns:cb="http://www.vedaxml.com/services/common/bureau/v1" xmlns:cuser="http://www.vedaxml.com/services/common/users/v1" xmlns:cid="http://www.vedaxml.com/services/common/identity/v1" xmlns:cgs="http://www.vedaxml.com/services/common/geospatial/v1" xmlns:cmnfin="http://www.vedaxml.com/services/common/financial/v1" targetNamespace="http://www.vedaxml.com/services/bureau/individual/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="individual-types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/bureau/v1" schemaLocation="../../../../common/bureau/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/users/v1" schemaLocation="../../../../common/users/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/identity/v1" schemaLocation="../../../../common/users/schemas/identity-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/geospatial/v1" schemaLocation="../../../../common/geospatial/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/financial/v1" schemaLocation="../../../../common/financial/schemas/types-v1.xsd"/>
+	<xs:complexType name="AccountTypeType">
+		<xs:simpleContent>
+			<xs:extension base="xs:token">
+				<xs:attribute name="code" type="xs:token"/>
+			</xs:extension>
+		</xs:simpleContent>
+		<!--TODO: can this be an enum? possible values? can it be sourced from common bureau schema? -->
+	</xs:complexType>
+	<xs:complexType name="ConsumerAccountCollectionType">
+		<xs:sequence>
+			<xs:element name="account" type="bi:ConsumerAccountType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommercialAccountCollectionType">
+		<xs:sequence>
+			<xs:element name="account" type="bi:CommercialAccountType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConsumerAccountType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:SegmentTypeMetadataType" minOccurs="0"/>
+			<xs:element name="accountSummary" type="bi:AccountSummaryType" minOccurs="0"/>
+			<xs:element name="accountDetailHistory" type="bi:AccountDetailHistoryType"/>
+			<xs:element name="accountOwnershipTransfers" type="bi:AccountOwnershipTransfersType" minOccurs="0"/>
+			<xs:element name="accountHoldingPeriods" type="bi:AccountHoldingPeriodsType" minOccurs="0"/>
+			<xs:element name="accountRepaymentHistory" type="bi:AccountRepaymentHistoryType" minOccurs="0"/>
+			<xs:element name="defaults" type="bi:ConsumerDefaultCollectionType" minOccurs="0"/>
+			<!-- <xs:element name="originalMaximumAmountCredit" type="bi:BureauCurrencyType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="latestMaximumAmountCredit" type="bi:BureauCurrencyType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="dateLastMaximumAmountChanged" type="xs:date" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="totalNumberOfAccountHolder" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"/> -->
+		</xs:sequence>
+		<!-- <xs:attribute name="accountDataLevel" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Indicates the maximum data level that can be returned for this account.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> -->
+	</xs:complexType>
+	<xs:complexType name="CommercialAccountType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:SegmentTypeMetadataType" minOccurs="0"/>
+			<xs:element name="accountSummary" type="bi:AccountSummaryType" minOccurs="0"/>
+			<xs:element name="accountDetailHistory" type="bi:AccountDetailHistoryType" minOccurs="0"/>
+			<xs:element name="accountOwnershipTransfers" type="bi:AccountOwnershipTransfersType" minOccurs="0"/>
+			<xs:element name="accountHoldingPeriods" type="bi:AccountHoldingPeriodsType" minOccurs="0"/>
+			<xs:element name="accountRepaymentHistory" type="bi:AccountRepaymentHistoryType" minOccurs="0"/>
+			<xs:element name="defaults" type="bi:CommercialDefaultCollectionType" minOccurs="0"/>
+			<!-- <xs:element name="originalMaximumAmountCredit" type="bi:BureauCurrencyType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="latestMaximumAmountCredit" type="bi:BureauCurrencyType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="dateLastMaximumAmountChanged" type="xs:date" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="totalNumberOfAccountHolder" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"/> -->
+		</xs:sequence>
+		<!-- <xs:attribute name="accountDataLevel" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Indicates the maximum data level that can be returned for this account.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> -->
+	</xs:complexType>
+	<xs:complexType name="AccountHoldingPeriodType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReferencesMetadataType" minOccurs="0"/>
+			<xs:element name="databaseAccountNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="effectivePeriod" type="bi:BureauPeriodType" minOccurs="0"/>
+			<xs:element name="defaultAssociationPeriod" type="bi:BureauPeriodType" minOccurs="0"/>
+			<xs:element name="seriousCreditInfringementIndicator" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="seriousCreditInfringementDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="relationship" type="bi:ReferenceCodeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountDetailHistoryType">
+		<xs:sequence>
+			<xs:element name="accountDetail" type="bi:AccountDetailType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountHoldingPeriodsType">
+		<xs:sequence>
+			<xs:element name="accountHolding" type="bi:AccountHoldingPeriodType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountOwnershipTransfersType">
+		<xs:sequence>
+			<xs:element name="accountTransfer" type="bi:AccountOwnershipTransferType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountRepaymentHistoryType">
+		<xs:sequence>
+			<xs:element name="accountRepayment" type="bi:AccountRepaymentType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountRepaymentType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReferenceAndLifecycleMetadataType" minOccurs="0"/>
+			<xs:element name="databaseAccountNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="period" type="xs:gYearMonth" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Repayment period year and month.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The repayment history status of the	account for the specified monthly period.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="balanceAmount" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="utilisationPercentage" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountDetailType">
+		<xs:sequence>
+			<!--TODO: should have a reference and referenceS as credit liability provides a single reference oNLY-->
+			<xs:element name="metadata" type="bi:ReferencesMetadataType" minOccurs="0"/>
+			<xs:element name="sequence" type="xs:nonNegativeInteger"/>
+			<xs:element name="accountId" type="xs:token" minOccurs="0"/>
+			<xs:element name="accountSubId" type="xs:token" minOccurs="0"/>
+			<xs:element name="accountMemberCode" type="cuser:member-codeType" minOccurs="0"/>
+			<xs:element name="databaseAccountNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="latestBusinessEntity" type="bi:BusinessEntityType" minOccurs="0"/>
+			<xs:element name="originalBusinessEntity" type="bi:BusinessEntityType" minOccurs="0"/>
+			<xs:element name="latestMemberShortName" type="xs:string" minOccurs="0"/>
+			<xs:element name="originalMemberShortName" type="xs:string" minOccurs="0"/>
+			<xs:element name="isLicensee" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="termType" type="bi:ReferenceCodeType" minOccurs="0"/>
+			<xs:element name="termOfLoan" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The time period of the original contracted term of the loan in months
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+            <xs:element name="termUnitType" type="xs:token" minOccurs="0"/>		
+			<xs:element name="isUnlimitedCredit" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Indicates whether credit amount available is unlimited
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="noFixedLimit" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Indicates that no fixed credit limit is in place
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="creditPurpose" type="xs:token"/>
+			<xs:element name="accountType" type="bi:AccountTypeType" minOccurs="0"/>
+			<xs:element name="loanPaymentMethod" type="bi:ReferenceCodeType" minOccurs="0"/>
+			<xs:element name="securedCredit" type="bi:ReferenceCodeType" minOccurs="0"/>
+			<xs:element name="dateLastChanged" type="xs:date" minOccurs="0"/>
+			<xs:element name="openDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="closedDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="reopenDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="extractDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="effectivePeriod" type="bi:BureauPeriodType" minOccurs="0"/>
+			<xs:element name="maximumAmountCredit" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="balanceAmount" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="monitorFlag" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountSummaryType">
+		<xs:sequence>
+			<xs:element name="totalNumberOfAccountHolder" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<xs:element name="originalMaximumAmountCredit" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="latestMaximumAmountCredit" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="dateLastMaximumAmountChanged" type="xs:date" minOccurs="0"/>
+			<xs:element name="accountDataLevel" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountOwnershipTransferType">
+		<xs:sequence>
+			<xs:element name="type" type="bi:CurrentPreviousEnum" minOccurs="0"/>
+			<xs:element name="sequence" type="xs:nonNegativeInteger"/>
+			<xs:element name="transferDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="transferReason" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConsumerDefaultCollectionType">
+		<xs:sequence>
+			<xs:element name="default" type="bi:ConsumerDefaultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommercialDefaultCollectionType">
+		<xs:sequence>
+			<xs:element name="default" type="bi:CommercialDefaultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConsumerDefaultType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReferencesMetadataType" minOccurs="0"/>
+			<xs:element name="accountId" type="xs:token" minOccurs="0"/>
+			<xs:element name="accountSubId" type="xs:token" minOccurs="0"/>
+			<xs:element name="databaseAccountNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="status" type="bi:BureauStatusType" minOccurs="0"/>
+			<xs:element name="dateRecorded" type="xs:date" minOccurs="0"/>
+			<xs:element name="defaultAmount" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="reasonToReport" type="bi:ReferenceCodeType" minOccurs="0"/>
+			<xs:element name="provider" type="xs:token" minOccurs="0"/>
+			<xs:element name="associationCode" type="xs:token" minOccurs="0"/>
+			<xs:element name="coBorrow" type="xs:token" minOccurs="0"/>
+			<xs:element name="latestBusinessEntity" type="bi:BusinessEntityType" minOccurs="0"/>
+			<xs:element name="originalBusinessEntity" type="bi:BusinessEntityType" minOccurs="0"/>
+			<xs:element name="originalDefaultDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="originalAmount" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="originalReasonToReport" type="bi:ReferenceCodeType" minOccurs="0"/>
+			<xs:element name="originalProvider" type="xs:token" minOccurs="0"/>
+			<xs:element name="accelerateIndicator" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CommercialDefaultType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReferencesMetadataType" minOccurs="0"/>
+			<xs:element name="accountId" type="xs:token" minOccurs="0"/>
+			<xs:element name="accountSubId" type="xs:token" minOccurs="0"/>
+			<xs:element name="databaseAccountNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="status" type="bi:BureauStatusType" minOccurs="0"/>
+			<xs:element name="dateRecorded" type="xs:date" minOccurs="0"/>
+			<xs:element name="defaultAmount" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="reasonToReport" type="bi:ReferenceCodeType" minOccurs="0"/>
+			<xs:element name="provider" type="xs:token" minOccurs="0"/>
+			<xs:element name="associationCode" type="xs:token" minOccurs="0"/>
+			<xs:element name="coBorrow" type="xs:token" minOccurs="0"/>
+			<xs:element name="latestBusinessEntity" type="bi:BusinessEntityType" minOccurs="0"/>
+			<xs:element name="originalBusinessEntity" type="bi:BusinessEntityType" minOccurs="0"/>
+			<xs:element name="originalDefaultDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="originalAmount" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="originalReasonToReport" type="bi:ReferenceCodeType" minOccurs="0"/>
+			<xs:element name="originalProvider" type="xs:token" minOccurs="0"/>
+			<xs:element name="accelerateIndicator" type="xs:boolean" minOccurs="0"/>
+			<!-- <xs:element name="industryType" type="xs:token" minOccurs="0" maxOccurs="1"/> -->
+		</xs:sequence>
+	</xs:complexType>
+	<!-- TODO: move into individual-types -->
+	<xs:complexType name="BureauPeriodType">
+		<xs:annotation>
+			<xs:documentation>Period or duration type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="startDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BusinessEntityType">
+		<xs:sequence>
+			<xs:element name="memberCode" type="cuser:member-codeType"/>
+			<xs:element name="branchCode" type="cuser:branch-codeType"/>
+			<xs:element name="ccrContributorCode" type="cuser:ccrContributorCodeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BureauCurrencyType">
+		<xs:simpleContent>
+			<xs:extension base="xs:nonNegativeInteger">
+				<xs:attribute name="currencyCode" type="cmnfin:CurrencyCodeType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="CreditEnquiryType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:SegmentTypeMetadataType" minOccurs="0"/>
+			<xs:element name="current" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="enquiryDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="accountType" type="bi:AccountTypeType" minOccurs="0"/>
+			<xs:element name="amount" type="bi:BureauCurrencyType" minOccurs="0"/>
+			<xs:element name="relationship" type="bi:ReferenceCodeType" minOccurs="0"/>
+			<xs:element name="coBorrower" type="xs:token" minOccurs="0"/>
+			<xs:element name="clientReference" type="xs:token" minOccurs="0"/>
+			<xs:element name="creditEnquirer" type="xs:token" minOccurs="0"/>
+			<xs:element name="type" type="xs:token" minOccurs="0"/>
+			<xs:element name="originalBusinessEntity" type="bi:BusinessEntityType" minOccurs="0"/>
+			<xs:element name="unlimitedCredit" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="secureCreditCode" type="xs:token" minOccurs="0"/>
+			<xs:element name="currentProductEnquiry" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

@@ -1,0 +1,456 @@
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:cb="http://www.vedaxml.com/services/common/bureau/v1"
+	xmlns:cutil="http://www.vedaxml.com/services/common/utilities/v1" 
+	xmlns:cuser="http://www.vedaxml.com/services/common/users/v1" 
+	xmlns:corg="http://www.vedaxml.com/services/common/organisation/v1" 
+	xmlns:cgs="http://www.vedaxml.com/services/common/geospatial/v1"
+	xmlns:bi="http://www.vedaxml.com/services/bureau/individual/v1"
+	targetNamespace="http://www.vedaxml.com/services/bureau/individual/v1" 
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xs:include schemaLocation="credit-data-enums-v1.xsd"/>
+	<xs:include schemaLocation="individual-types-v1.xsd"/>
+	<xs:include schemaLocation="individual-account-types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/bureau/v1" schemaLocation="../../../../common/bureau/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/utilities/v1" schemaLocation="../../../../common/utilities/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/users/v1" schemaLocation="../../../../common/users/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/organisation/v1" schemaLocation="../../../../common/organisation/schemas/types-v1.xsd"/>
+	<xs:import namespace="http://www.vedaxml.com/services/common/geospatial/v1" schemaLocation="../../../../common/geospatial/schemas/types-v1.xsd"/>
+	
+	<xs:complexType name="CreditDataRequestType">
+		<xs:sequence>
+			<xs:element name="context" type="bi:ContextType" minOccurs="1"/>
+			<xs:element name="subject" type="bi:SubjectType" minOccurs="1"/>
+			<xs:element name="data" type="bi:DataType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreditDataResponseType">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="identities" type="bi:MatchedIdentitiesType"/>
+				<xs:element name="consumerCreditFile" type="bi:ConsumerCreditFileType" minOccurs="0"/>
+				<xs:element name="commercialCreditFile" type="bi:CommercialCreditFileType" minOccurs="0"/>
+				<xs:element name="publicRecordOrConsumerCreditInformation" type="bi:PublicRecordOrConsumerCreditInformation" minOccurs="0"/>
+				<xs:element name="fileBanReport" type="bi:FileBanReportType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="fileBanReport" type="bi:FileBanReportType"/>
+			</xs:sequence>			
+			<xs:sequence>
+				<xs:element name="generalMessages" type="bi:GeneralMessageCollectionType"/>
+			</xs:sequence>			
+		</xs:choice>
+	</xs:complexType>
+	
+	<xs:complexType name="FileBanReportType">
+		<xs:sequence>
+			<xs:element name="reportedDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="isExtended" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GeneralMessageCollectionType">
+		<xs:sequence>
+			<xs:element name="generalMessage" type="xs:token" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="MatchedIdentitiesType">
+		<xs:sequence>
+			<xs:element name="strongMatches" type="bi:StrongMatchesType" minOccurs="0"/>
+			<xs:element name="possibleMatches" type="bi:PossibleMatchCollectionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="StrongMatchesType">
+		<xs:sequence>
+			<xs:element name="primaryMatch" type="bi:MatchedIdentityType" minOccurs="0"/>
+			<xs:element name="otherIdentities" type="bi:OtherMatchCollectionType" minOccurs="0"/>
+			<xs:element name="structuredAddresses" type="bi:MatchedAddressCollectionType" minOccurs="0"/>
+			<xs:element name="employers" type="bi:MatchedEmployerCollectionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="MatchedIdentityType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:LifecycleAndReportedAndReferenceMetadataType"/>
+			<xs:element name="type" type="bi:ReferenceCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Defines strong, create or possible on the primary match instance only</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="bi:MatchedNameType" minOccurs="0"/>
+			<xs:element name="gender" type="bi:GenderType"  minOccurs="0"/>
+			<xs:element name="dateOfBirth" type="bi:MatchedDateOfBirthType" minOccurs="0"/>
+			<xs:element name="driversLicence" type="bi:MatchedDriversLicenceType" minOccurs="0"/>
+			<xs:element name="lodgedComplaint" type="bi:LodgedComplaintType" minOccurs="0"/>
+			<xs:element name="isDeceased" type="bi:IsDeceasedType" minOccurs="0"/>
+			<!-- Future Use: 
+			<xs:element name="doNotProvideCredit" type="bi:DoNotProvideCreditType" minOccurs="0"/>
+			<xs:element name="otherIndicators" type="bi:OtherIndicatorCollectionType" minOccurs="0"/>-->
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LodgedComplaintType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReportedMetadataType" minOccurs="0"/>
+			<xs:element name="value" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="IsDeceasedType">
+		<xs:sequence>
+			<!-- TODO: this type results in the lifecycle element being included, but i dont think the model calls for it - consider an alternative especially if lifecycle becomes mandatory -->
+			<xs:element name="metadata" type="bi:ReportedMetadataType" minOccurs="0"/>
+			<xs:element name="value" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DoNotProvideCreditType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReportedMetadataType" minOccurs="0"/>
+			<xs:element name="value" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="OtherIndicatorCollectionType">
+		<xs:sequence>
+			<xs:element name="otherIndicator" type="bi:OtherIndicatorType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="OtherIndicatorType">
+		<xs:sequence>
+			<xs:element name="metadata" type="bi:ReportedMetadataType"/>
+			<xs:element name="key" type="xs:token"/>
+			<xs:element name="value">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:token">
+							<xs:attribute name="unit" type="xs:token"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="OtherMatchCollectionType">
+		<xs:sequence>
+			<xs:element name="otherIdentity" type="bi:MatchedIdentityType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PossibleMatchCollectionType">
+		<xs:sequence>
+			<xs:element name="possibleMatch" type="bi:PossibleMatchType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PossibleMatchType">
+		<xs:sequence>
+			<xs:element name="identity" type="bi:MatchedIdentityType"/>
+			<xs:element name="structuredAddresses" type="bi:MatchedAddressCollectionType" minOccurs="0"/>
+			<xs:element name="employers" type="bi:MatchedEmployerCollectionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="MatchedAddressCollectionType">
+		<xs:sequence>
+			<xs:element name="structuredAddress" type="bi:MatchedStructuredAddressType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="EmployerCollectionType">
+		<xs:sequence>
+			<xs:element name="employer" type="bi:EmployerType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="MatchedEmployerCollectionType">
+		<xs:sequence>
+			<xs:element name="employer" type="bi:MatchedEmployerType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ConsumerCreditFileType">
+		<xs:sequence>
+			<xs:element name="fileNotes" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Contains notes appended to the individual's credit file. Notes can include important information and it is  highly recommended to implement the capability to read and display these.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="fileNote" type="bi:FileNoteType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>File note</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>				
+			</xs:element>
+
+			<xs:element name="creditEnquiries" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Includes information about credit-enquiries (commercial only), credit applications (consumer only) and authorised agent enquiries</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="creditEnquiry" type="bi:CreditEnquiryType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Includes details of one credit enquiry</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>			
+			<xs:element name="accounts" type="bi:ConsumerAccountCollectionType" minOccurs="0"/>
+			
+			<xs:element name="seriousCreditInfringements" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="seriousCreditInfringement" type="bi:SeriousCreditInfringementType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommercialCreditFileType">
+		<xs:sequence>
+			<xs:element name="fileNotes" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Contains notes appended to the individual's credit file. Notes can include important information and it is  highly recommended to implement the capability to read and display these.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="fileNote" type="bi:FileNoteType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>File note</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>				
+			</xs:element>
+
+			<xs:element name="creditEnquiries" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Includes information about credit-enquiries (commercial only), credit applications (consumer only) and authorised agent enquiries</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="creditEnquiry" type="bi:CreditEnquiryType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Includes details of one credit enquiry</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>			
+			<xs:element name="accounts" type="bi:CommercialAccountCollectionType" minOccurs="0"/>
+			
+			<xs:element name="seriousCreditInfringements" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="seriousCreditInfringement" type="bi:SeriousCreditInfringementType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>			
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PublicRecordOrConsumerCreditInformation">
+		<xs:sequence>
+			<xs:element name="courtActions" type="bi:CourtActionCollectionType" minOccurs="0"/>
+			<xs:element name="disqualifiedDirectorships" type="bi:DisqualifiedDirectorshipCollectionType" minOccurs="0"/>
+			<!--TODO: define in EDM -->
+			<xs:element name="directorships" type="bi:DirectorshipCollectionType" minOccurs="0"/>
+			<xs:element name="businessNames" type="bi:BusinessNameCollectionType" minOccurs="0"/>
+			<!--TODO: define in EDM -->
+			<xs:element name="personalInsolvencies" type="bi:PersonalInsolvencyCollectionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CourtActionCollectionType">
+		<xs:sequence>
+			<xs:element name="courtAction" type="bi:CourtActionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DisqualifiedDirectorshipCollectionType">
+		<xs:sequence>
+			<xs:element name="disqualifiedDirectorship" type="bi:DisqualifiedDirectorshipType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DirectorshipCollectionType">
+		<xs:sequence>
+			<xs:element name="directorship" type="bi:DirectorshipType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BusinessNameCollectionType">
+		<xs:sequence>
+			<xs:element name="businessName" type="bi:BusinessNameType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PersonalInsolvencyCollectionType">
+		<xs:sequence>
+			<xs:element name="personalInsolvency" type="bi:PersonalInsolvencyType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ContextType">
+		<xs:sequence>
+			<xs:element name="enquiryId" type="cutil:uuidType"/>
+			<xs:element name="businessEntity" type="bi:BusinessEntityType"/>
+			<xs:element name="operatorId" type="xs:token" minOccurs="0"/>
+			<!--TODO: can these be sourced from a common schema? which one? common bureau maybe? -->
+			<xs:element name="productDataLevelCode" type="xs:token"/>
+			<!--TODO: should be an enum -->
+			<xs:element name="permissionTypeCode" type="xs:token"/>
+			<xs:element name="channelCode" type="xs:token"/>
+			<xs:element name="productKey" type="xs:token"/>
+			<xs:element name="customerType" type="xs:token"/>
+			<xs:element name="clientReference" type="xs:token"/>
+			<xs:element name="options" type="bi:OptionCollectionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="OptionCollectionType">
+		<xs:sequence>
+			<xs:element name="identity" type="bi:IdentityOptionEnum" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="account" type="bi:AccountOptionEnum" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="report" type="bi:ReportOptionEnum" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="SubjectType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="bureauReference" type="cb:BureauReferenceType"/>
+				<xs:element name="individual" type="bi:IndividualType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DataType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="consumerCreditEnquiry" type="bi:ConsumerCreditEnquiryType"/>
+				<xs:element name="commercialCreditEnquiry" type="bi:CommercialCreditEnquiryType"/>
+				<xs:element name="fileAccess" type="bi:FileAccessType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ConsumerCreditEnquiryType">
+		<xs:sequence>
+			<xs:element name="accountType" type="bi:AccountTypeRequestType"/>
+			<xs:element name="amount" type="xs:integer" minOccurs="0"/>
+			<!--TODO: enum? moved to common? -->
+			<xs:element name="associationCode" type="xs:token"/>
+			<xs:element name="coBorrow" type="xs:token" minOccurs="0"/>
+			<xs:element name="referenceNumber" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CommercialCreditEnquiryType">
+		<xs:sequence>
+			<xs:element name="accountType" type="bi:AccountTypeRequestType"/>
+			<xs:element name="amount" type="xs:integer" minOccurs="0"/>
+			<!--TODO: enum? moved to common? -->
+			<xs:element name="associationCode" type="xs:token"/>
+			<xs:element name="coBorrow" type="xs:token" minOccurs="0"/>
+			<xs:element name="referenceNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="subscribersName" type="xs:token" minOccurs="0"/>
+			<xs:element name="enquiryType" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AccountTypeRequestType">
+		<!--TODO: can this be an enum? possible values? can it be sourced from common bureau schema? --> 
+		<xs:sequence>
+			<xs:element name="code" type="xs:token" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="FileAccessType">
+		<xs:sequence>
+			<xs:element name="date" type="xs:date" minOccurs="1"/>
+			<xs:element name="referenceNumber" type="xs:token" minOccurs="0"/>
+			<xs:element name="serviceType" type="xs:token" minOccurs="0"/>
+			<xs:element name="outputMode" type="bi:OutputModeEnum" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreditDataFaultType">
+		<xs:sequence>
+			<xs:element name="code" minOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="value" type="xs:token" minOccurs="1"/>
+						<xs:element name="sub-code" type="xs:token" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!--TODO: should be a date -->
+			<xs:element name="timestamp" type="xs:token" minOccurs="1"/>
+			<xs:element name="segmentId" type="xs:token" minOccurs="0"/>
+			<xs:element name="message" type="xs:token" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="FileNoteType">
+		<xs:sequence>
+            <xs:element name="metadata" type="bi:BureauReferencesMetadataType"/>			
+			<xs:element name="text" type="xs:token">
+				<xs:annotation>
+					<xs:documentation>file note content</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="dateRecorded" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Date the file note was reccorded</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	
+	<xs:complexType name="SeriousCreditInfringementType">
+		<xs:sequence>
+			<xs:element name="sequence" type="xs:nonNegativeInteger"/>
+			<xs:element name="lastUpdateDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="sciDate" type="bi:AccountTypeType" minOccurs="0"/>
+			<xs:element name="sciIndicator" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="watchedIndicator" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="accountId" type="xs:token" minOccurs="0"/>
+			<xs:element name="accountSubId" type="xs:token" minOccurs="0"/>
+			<xs:element name="originalBusinessEntity" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="memberCode" type="cuser:member-codeType"/>
+						<xs:element name="branchCode" type="cuser:branch-codeType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="reportingBusinessEntity" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="memberCode" type="cuser:member-codeType"/>
+						<xs:element name="branchCode" type="cuser:branch-codeType"/>
+						<xs:element name="memberShortName" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="default" type="bi:ConsumerDefaultType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

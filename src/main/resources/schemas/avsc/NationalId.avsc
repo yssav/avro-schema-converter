@@ -1,0 +1,9 @@
+{
+    "namespace": "com.equifax.au",
+  "type": "record",
+  "name": "NationalId",
+  "fields": [
+    {"name": "idType", "type": ["null", "com.equifax.au.IdType"], "default": null},
+    {"name": "idNumber", "type": ["null","string"], "default": null}
+  ]
+}

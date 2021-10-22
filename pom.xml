@@ -54,11 +54,14 @@
 			<artifactId>jackson-module-jsonSchema</artifactId>
 			<version>2.13.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.equifax.au.dfds.fulfillment</groupId>
-			<artifactId>conversion-plugin</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>com.equifax.au.dfds.fulfillment</groupId>-->
+<!--			<artifactId>conversion-plugin</artifactId>-->
+<!--			<version>1.0-SNAPSHOT</version>-->
+<!--		</dependency>-->
+
+
 	</dependencies>
 
 	<build>
@@ -86,8 +89,11 @@
 							<goal>schema</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
+							<sourceDirectory>${project.basedir}/src/main/resources/schemas/avsc/</sourceDirectory>
 							<outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+							<imports>
+								<import>${project.basedir}/src/main/resources/schemas/avsc/IdType.avsc</import>
+							</imports>
 						</configuration>
 					</execution>
 				</executions>

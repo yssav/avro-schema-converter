@@ -1,0 +1,29 @@
+{
+    "type": "record",
+    "name": "EmailAddress",
+    "namespace": "com.equifax.au",
+    "doc": "Stores details about an email address that a user has associated with their account.",
+    "fields": [
+      {
+        "name": "email",
+        "doc": "The email address, e.g. `foo@example.com`",
+        "type": "string"
+      },
+      {
+        "name": "verified",
+        "doc": "true if the user has clicked the link in a confirmation email to this address.",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "name": "dateAdded",
+        "doc": "Timestamp (milliseconds since epoch) when the email address was added to the account.",
+        "type": "long"
+      },
+      {
+        "name": "dateBounced",
+        "doc": "Timestamp (milliseconds since epoch) when an email sent to this address last bounced. Reset to null when the address no longer bounces.",
+        "type": ["null", "long"]
+      }
+    ]
+}
